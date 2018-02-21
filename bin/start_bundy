@@ -1,0 +1,19 @@
+#!/bin/bash
+# punch in/out on lock/unlock
+# Author Paolo A. Vacarizas <pvacarizas@risingtide.ph>
+# Date December 13, 2017
+#
+echo "start"
+dbus-monitor --session "type='signal',interface='com.ubuntu.Upstart0_6'" | \ 
+(
+  while true; do
+    read X
+    if echo $X | grep "desktop-lock" &> /dev/null; then
+      echo "lock";
+      php "/home/pv/git/bundy/bundy.php"
+    elif echo $X | grep "desktop-unlock" &> /dev/null; then
+      echo "unlock";
+      php "/home/pv/git/bundy/bundy.php"
+    fi
+  done
+)
